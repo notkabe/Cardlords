@@ -1,10 +1,32 @@
 # Cardlords
 
-Commit 1
-Creacion del escenario 2D y el nodo carta con sus nodos hijos con imagen y colisión
-Creación del script en .gd para el drag
+**Cardlords** es un juego de cartas por turnos desarrollado con **Godot 4** y **C#**, que combina mecánicas de estrategia y juego de cartas coleccionables en un entorno visual 2D.
 
-Commit 2
-Transformación del código a csharp e implementación de efectos de hover
-Bugs de selección múltiple y drag múltiple además de localización lejana de carta al hacer drag a arreglar
-en futuras versiones 
+---
+
+## 🧾 Historial de desarrollo
+
+### ✅ Commit 1
+- Creación del **escenario principal en 2D**.
+- Implementación del **nodo de carta**, incluyendo:
+  - Imagen representativa.
+  - Colisión para interacción.
+- Desarrollo de script inicial en **GDScript** para implementar el sistema de **arrastrar cartas (drag & drop)**.
+
+### ✅ Commit 2
+- Migración del código de **GDScript a C#**.
+- Implementación de **efectos de hover** al pasar el ratón sobre una carta.
+- Identificación de bugs:
+  - Selección múltiple no deseada.
+  - Múltiples cartas arrastradas simultáneamente.
+  - Desplazamiento incorrecto de las cartas al hacer drag.
+- Estos errores serán corregidos en versiones futuras.
+
+---
+
+## 🔧 Tecnologías utilizadas
+- **Godot 4** con soporte para **.NET (C#)**
+- Desarrollo 2D
+- Sistema de eventos y físicas de Godot
+
+---
