@@ -3,29 +3,37 @@ using System;
 
 public partial class Card : Node2D
 {
-	
+
 	[Signal]
 	public delegate void HoveredEventHandler(Card card);
 
 	[Signal]
 	public delegate void HoveredOffEventHandler(Card card);
-	
-	// Called when the node enters the scene tree for the first time.
+
+ // Se llama al cargar la escena por primera vez
 	public override void _Ready()
 	{
-		GetParent().Call("connect_card_signals", this);
+		base._Ready();
+
+		if (GetParent() is CardManager manager)
+		{
+			manager.ConnectCardSignals(this);
+		}
+		else
+		{
+			GD.PrintErr($"El padre de {Name} no es CardManager, es {GetParent()?.GetType().Name}");
+		}
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
+// Se llama cuando el ratón entra en el área de la carta (Area2D)
+	public void OnArea2DMouseEntered()
 	{
+		EmitSignal(SignalName.Hovered, this);
 	}
-	
-	public void OnArea2DMouseEntered(){
-		 EmitSignal(SignalName.Hovered, this);
-	}
-	
-	public void OnArea2DMouseExited(){
-		 EmitSignal(SignalName.HoveredOff, this);
+
+  // Se llama cuando el ratón sale del área de la carta (Area2D)
+	public void OnArea2DMouseExited()
+	{
+		EmitSignal(SignalName.HoveredOff, this);
 	}
 }

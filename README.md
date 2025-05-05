@@ -22,6 +22,17 @@
   - Desplazamiento incorrecto de las cartas al hacer drag.
 - Estos errores serán corregidos en versiones futuras.
 
+### ✅ Commit 3  
+- Corrección de los bugs detectados anteriormente:  
+  - Se evita que varias cartas puedan ser seleccionadas o arrastradas simultáneamente.  
+  - Las cartas ya no se salen de los bordes de la pantalla al hacer drag.  
+- Creación de los **CardSlots** (espacios para soltar cartas):  
+  - Cada slot puede recibir una sola carta.  
+  - Al soltar una carta sobre un slot vacío, esta se alinea al centro del mismo.  
+  - Se desactiva la colisión de la carta para evitar que vuelva a ser arrastrada.  
+- Integración completa entre cartas y slots.  
+- Añadidos comentarios simples en el código para facilitar la comprensión y mantenimiento.  
+
 ---
 
 ## 🔧 Tecnologías utilizadas

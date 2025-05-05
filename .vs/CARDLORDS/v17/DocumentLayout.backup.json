@@ -1,0 +1,62 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Elyer\\OneDrive\\Escritorio\\CardLords\\cardlords\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{444F96D9-2B25-4718-805B-4565F88AB2C2}|CardLords.csproj|c:\\users\\elyer\\onedrive\\escritorio\\cardlords\\cardlords\\cardmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{444F96D9-2B25-4718-805B-4565F88AB2C2}|CardLords.csproj|solutionrelative:cardmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{444F96D9-2B25-4718-805B-4565F88AB2C2}|CardLords.csproj|c:\\users\\elyer\\onedrive\\escritorio\\cardlords\\cardlords\\card.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{444F96D9-2B25-4718-805B-4565F88AB2C2}|CardLords.csproj|solutionrelative:card.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CardManager.cs",
+              "DocumentMoniker": "C:\\Users\\Elyer\\OneDrive\\Escritorio\\CardLords\\cardlords\\CardManager.cs",
+              "RelativeDocumentMoniker": "CardManager.cs",
+              "ToolTip": "C:\\Users\\Elyer\\OneDrive\\Escritorio\\CardLords\\cardlords\\CardManager.cs",
+              "RelativeToolTip": "CardManager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-04T17:24:32.99Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Card.cs",
+              "DocumentMoniker": "C:\\Users\\Elyer\\OneDrive\\Escritorio\\CardLords\\cardlords\\Card.cs",
+              "RelativeDocumentMoniker": "Card.cs",
+              "ToolTip": "C:\\Users\\Elyer\\OneDrive\\Escritorio\\CardLords\\cardlords\\Card.cs",
+              "RelativeToolTip": "Card.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-04T17:23:42.182Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

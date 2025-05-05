@@ -4,16 +4,19 @@ using System;
 public partial class CardManager : Node2D
 {
 	private const uint COLLISION_MASK_CARD = 1;
+	private const uint COLLISION_MASK_CARD_SLOT = 2;
 
 	private Vector2 screenSize;
 	private Node2D cardBeingDragged = null;
 	private bool isHoveringOnCard = false;
 
+ // Se ejecuta al entrar en la escena
 	public override void _Ready()
 	{
 		screenSize = GetViewportRect().Size;
 	}
 
+ //Se llama cada frame
 	public override void _Process(double delta)
 	{
 		if (cardBeingDragged != null)
@@ -26,6 +29,7 @@ public partial class CardManager : Node2D
 		}
 	}
 
+// Maneja eventos de ratón para iniciar o terminar el arrastre
 	public override void _Input(InputEvent @event)
 	{
 		if (@event is InputEventMouseButton mouseEvent && mouseEvent.ButtonIndex == MouseButton.Left)
@@ -46,12 +50,17 @@ public partial class CardManager : Node2D
 		}
 	}
 	
+	/* Conecta las señales de hover de la carta al gestor:
+	   - "Hovered"     → OnHoveredOverCard
+	   - "HoveredOff"  → OnHoveredOffCard
+	*/
 	 public void ConnectCardSignals(Node2D card)
 	{
-		card.Connect("hovered", new Callable(this, nameof(OnHoveredOverCard)));
-		card.Connect("hovered_off", new Callable(this, nameof(OnHoveredOffCard)));
+		card.Connect("Hovered", new Callable(this, nameof(OnHoveredOverCard)));
+		card.Connect("HoveredOff", new Callable(this, nameof(OnHoveredOffCard)));
 	}
 	
+	// Se llama cuando el cursor pasa por encima de una carta
 	private void OnHoveredOverCard(Node2D card)
 	{
 		if (!isHoveringOnCard && cardBeingDragged == null)
@@ -61,6 +70,7 @@ public partial class CardManager : Node2D
 		}
 	}
 
+// Se llama cuando el cursor sale de una carta
 	private void OnHoveredOffCard(Node2D card)
 	{
 		if (cardBeingDragged == null)
@@ -79,6 +89,7 @@ public partial class CardManager : Node2D
 		}
 	}
 
+ // Cambia visualmente la carta para resaltar o quitar el resaltado
 	private void HighlightCard(Node2D card, bool hovered)
 	{
 		if (hovered)
@@ -93,21 +104,32 @@ public partial class CardManager : Node2D
 		}
 	}
 
+// Inicia el arrastre de la carta indicada
 	public void StartDrag(Node2D card)
 	{
 		cardBeingDragged = card;
-		card.Scale = new Vector2(1f, 1f);
+		card.Scale = new Vector2(1.05f, 1.05f);
 	}
 
+// Finaliza el arrastre y restaura la escala original
 	public void FinishDrag()
 	{
 		if (cardBeingDragged != null)
 		{
-			cardBeingDragged.Scale = new Vector2(1.05f, 1.05f);
+			var cardSlotFound = RaycastCheckForCardSlot();
+			
+			if(cardSlotFound != null && !cardSlotFound.cardInSlot){
+				cardBeingDragged.Position = cardSlotFound.Position;
+				cardBeingDragged.GetNode<CollisionShape2D>("Area2D/CollisionShape2D").Disabled = true;
+				cardSlotFound.cardInSlot = true;
+			}
+			
+			cardBeingDragged.Scale = new Vector2(1f, 1f);
 			cardBeingDragged = null;
 		}
 	}
 
+// Devuelve la carta bajo el cursor usando un punto de colisión
 	 private Node2D RaycastCheckForCard()
 	{
 		var spaceState = GetWorld2D().DirectSpaceState;
@@ -121,12 +143,33 @@ public partial class CardManager : Node2D
 		var result = spaceState.IntersectPoint(parameters);
 		if (result.Count > 0)
 		{
+			GD.Print(GetCardWithHighestZIndex(result));
 			return GetCardWithHighestZIndex(result);
 		}
 
 		return null;
 	}
+	
+	private CardSlot RaycastCheckForCardSlot()
+	{
+		var spaceState = GetWorld2D().DirectSpaceState;
+		var parameters = new PhysicsPointQueryParameters2D
+		{
+			Position = GetGlobalMousePosition(),
+			CollideWithAreas = true,
+			CollisionMask = COLLISION_MASK_CARD_SLOT
+		};
 
+		var result = spaceState.IntersectPoint(parameters);
+		if (result.Count > 0)
+		{
+			return result[0]["collider"].As<Node2D>().GetParent<CardSlot>();
+		}
+
+		return null;
+	}
+
+// Selecciona la carta con mayor ZIndex de entre las colisiones detectadas
 	private Node2D GetCardWithHighestZIndex(Godot.Collections.Array<Godot.Collections.Dictionary> cards)
 	{
 	var highestZCard = cards[0]["collider"].As<Node2D>().GetParent<Node2D>();
