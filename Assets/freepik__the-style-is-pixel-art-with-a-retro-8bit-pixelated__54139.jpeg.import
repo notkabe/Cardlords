@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://7yiago6bdqfl"
-path="res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex"
+uid="uid://bgf5tjolsjywa"
+path="res://.godot/imported/freepik__the-style-is-pixel-art-with-a-retro-8bit-pixelated__54139.jpeg-3c4736adf0dcb997c131187e6019be24.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://icon.svg"
-dest_files=["res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex"]
+source_file="res://Assets/freepik__the-style-is-pixel-art-with-a-retro-8bit-pixelated__54139.jpeg"
+dest_files=["res://.godot/imported/freepik__the-style-is-pixel-art-with-a-retro-8bit-pixelated__54139.jpeg-3c4736adf0dcb997c131187e6019be24.ctex"]
 
 [params]
 
@@ -32,6 +32,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

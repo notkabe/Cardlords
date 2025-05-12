@@ -33,6 +33,16 @@
 - Integración completa entre cartas y slots.  
 - Añadidos comentarios simples en el código para facilitar la comprensión y mantenimiento.  
 
+### ✅ Commit 4
+- Implementación completa de la **mano del jugador (PlayerHand)**:
+  - Las cartas se distribuyen centradas en la parte inferior.
+  - Al soltar una carta fuera de un **CardSlot**, esta vuelve a su posición original con animación suave.
+  - La mano se **reordena automáticamente** al soltar una carta en un **CardSlot**.
+- Creación del **mazo (Deck)**:
+  - Contador visible de cartas restantes.
+  - Al hacer clic sobre el mazo, se extrae una carta.
+  - La nueva carta se añade a la mano con **animación de arrastre**.
+
 ---
 
 ## 🔧 Tecnologías utilizadas

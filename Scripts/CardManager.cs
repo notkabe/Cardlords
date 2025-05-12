@@ -5,15 +5,20 @@ public partial class CardManager : Node2D
 {
 	private const uint COLLISION_MASK_CARD = 1;
 	private const uint COLLISION_MASK_CARD_SLOT = 2;
+	private const float DEFUALT_CARD_MOVE_SPEED = 0.1f;
 
 	private Vector2 screenSize;
 	private Node2D cardBeingDragged = null;
 	private bool isHoveringOnCard = false;
+	
+	private PlayerHand player_hand_reference;
 
  // Se ejecuta al entrar en la escena
 	public override void _Ready()
 	{
 		screenSize = GetViewportRect().Size;
+		player_hand_reference = GetNode<PlayerHand>("../PlayerHand");
+		GetNode<InputManager>("../InputManager").Connect("LeftMouseButtonReleased", new Callable(this, nameof(OnLeftClickReleased)));
 	}
 
  //Se llama cada frame
@@ -28,27 +33,6 @@ public partial class CardManager : Node2D
 			);
 		}
 	}
-
-// Maneja eventos de ratón para iniciar o terminar el arrastre
-	public override void _Input(InputEvent @event)
-	{
-		if (@event is InputEventMouseButton mouseEvent && mouseEvent.ButtonIndex == MouseButton.Left)
-		{
-			if (mouseEvent.Pressed)
-			{
-				GD.Print("Left Click");
-				Node2D card = RaycastCheckForCard();
-				if (card != null)
-				{
-					StartDrag(card);
-				}
-			}
-			else
-			{
-				FinishDrag();
-			}
-		}
-	}
 	
 	/* Conecta las señales de hover de la carta al gestor:
 	   - "Hovered"     → OnHoveredOverCard
@@ -58,6 +42,12 @@ public partial class CardManager : Node2D
 	{
 		card.Connect("Hovered", new Callable(this, nameof(OnHoveredOverCard)));
 		card.Connect("HoveredOff", new Callable(this, nameof(OnHoveredOffCard)));
+	}
+	
+	public void OnLeftClickReleased(){
+		if(cardBeingDragged != null){
+			FinishDrag();
+		}
 	}
 	
 	// Se llama cuando el cursor pasa por encima de una carta
@@ -119,9 +109,16 @@ public partial class CardManager : Node2D
 			var cardSlotFound = RaycastCheckForCardSlot();
 			
 			if(cardSlotFound != null && !cardSlotFound.cardInSlot){
+				//Colocamos la carta en el slot
 				cardBeingDragged.Position = cardSlotFound.Position;
 				cardBeingDragged.GetNode<CollisionShape2D>("Area2D/CollisionShape2D").Disabled = true;
 				cardSlotFound.cardInSlot = true;
+				
+				//Quitamos la carta de la mano
+				player_hand_reference.RemoveCardFromHand(cardBeingDragged);
+			}else{
+				//Si no se suelta en slot, la devolvemos a la mano
+				player_hand_reference.AddCardToHand(cardBeingDragged, DEFUALT_CARD_MOVE_SPEED);
 			}
 			
 			cardBeingDragged.Scale = new Vector2(1f, 1f);

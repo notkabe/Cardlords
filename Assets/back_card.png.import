@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bgf5tjolsjywa"
-path="res://.godot/imported/freepik__the-style-is-pixel-art-with-a-retro-8bit-pixelated__54139.jpeg-63504ca0badd086a8666376c9a2225e6.ctex"
+uid="uid://bwjwqj88opqsi"
+path="res://.godot/imported/back_card.png-b702bc03634641e1e132d1b598e6f3f4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://freepik__the-style-is-pixel-art-with-a-retro-8bit-pixelated__54139.jpeg"
-dest_files=["res://.godot/imported/freepik__the-style-is-pixel-art-with-a-retro-8bit-pixelated__54139.jpeg-63504ca0badd086a8666376c9a2225e6.ctex"]
+source_file="res://Assets/back_card.png"
+dest_files=["res://.godot/imported/back_card.png-b702bc03634641e1e132d1b598e6f3f4.ctex"]
 
 [params]
 
