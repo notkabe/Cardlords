@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://yi8hw73y634g"
-path="res://.godot/imported/tortuig_card.png-168137fab18a435f395e877b805aa6a3.ctex"
+uid="uid://b1q84bkrunuoa"
+path="res://.godot/imported/Card_Hunter.png-1191ec6ccc37b4fde5cdfa8cc306481a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/tortuig_card.png"
-dest_files=["res://.godot/imported/tortuig_card.png-168137fab18a435f395e877b805aa6a3.ctex"]
+source_file="res://Assets/Card_Hunter.png"
+dest_files=["res://.godot/imported/Card_Hunter.png-1191ec6ccc37b4fde5cdfa8cc306481a.ctex"]
 
 [params]
 

@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class Deck : Node2D
+public partial class OpponentDeck : Node2D
 {
 	private const string CARD_SCENE_PATH = "res://Scenes/Card.tscn";
 	private const float CARD_DRAW_SPEED = 0.25f;
@@ -24,7 +24,7 @@ public partial class Deck : Node2D
 	}
 
 	public void DrawCard()
-	{
+	{	
 		if(card_drawn_this_turn){
 			return;
 		}
@@ -56,7 +56,7 @@ public partial class Deck : Node2D
 		GetNode("../CardManager").AddChild(new_card);
 		new_card.Name = "Card";
 
-		var hand = GetNode("../PlayerHand") as PlayerHand;
+		var hand = GetNode("../EnemyHand") as EnemyHand;
 		hand.AddCardToHand(new_card, CARD_DRAW_SPEED);
 	}
 	

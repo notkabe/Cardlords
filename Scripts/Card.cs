@@ -9,6 +9,8 @@ public partial class Card : Node2D
 
 	[Signal]
 	public delegate void HoveredOffEventHandler(Card card);
+	
+	public string card_type;
 
  // Se llama al cargar la escena por primera vez
 	public override void _Ready()

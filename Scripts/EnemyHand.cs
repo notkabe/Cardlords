@@ -2,10 +2,10 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class PlayerHand : Node2D
+public partial class EnemyHand : Node2D
 {
 	private const int CARD_WIDTH = 160;
-	private const int HAND_Y_POSITION = 955;
+	private const int HAND_Y_POSITION = 0;
 	private const float DEFAULT_CARD_MOVE_SPEED= 0.1f;
 
 	private List<Node2D> player_hand = new();
@@ -14,6 +14,8 @@ public partial class PlayerHand : Node2D
 	public override void _Ready()
 	{
 		center_screen_x = GetViewport().GetVisibleRect().Size.X / 2;
+		//Debug//Debug//Debug//Debug//Debug//Debug//Debug//Debug//Debug
+		GD.Print($"EnemyHand position: {Position}, visible: {Visible}, is inside tree: {IsInsideTree()}");
 	}
 
 	public void AddCardToHand(Node2D card, float speed)

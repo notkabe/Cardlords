@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bgf5tjolsjywa"
-path="res://.godot/imported/freepik__the-style-is-pixel-art-with-a-retro-8bit-pixelated__54139.jpeg-3c4736adf0dcb997c131187e6019be24.ctex"
+uid="uid://cwf3r4p47ppfi"
+path="res://.godot/imported/Card_Fenrir.png-2a8943c45b32f664d5b70caf2ecde61b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/freepik__the-style-is-pixel-art-with-a-retro-8bit-pixelated__54139.jpeg"
-dest_files=["res://.godot/imported/freepik__the-style-is-pixel-art-with-a-retro-8bit-pixelated__54139.jpeg-3c4736adf0dcb997c131187e6019be24.ctex"]
+source_file="res://Assets/Card_Fenrir.png"
+dest_files=["res://.godot/imported/Card_Fenrir.png-2a8943c45b32f664d5b70caf2ecde61b.ctex"]
 
 [params]
 

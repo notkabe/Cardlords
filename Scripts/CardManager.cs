@@ -5,11 +5,14 @@ public partial class CardManager : Node2D
 {
 	private const uint COLLISION_MASK_CARD = 1;
 	private const uint COLLISION_MASK_CARD_SLOT = 2;
-	private const float DEFUALT_CARD_MOVE_SPEED = 0.1f;
+	private const float DEFAULT_CARD_MOVE_SPEED = 0.1f;
+	private const float DEFAULT_CARD_SCALE = 0.6f;
+	private const float BIGGER_CARD_SCALE = 0.65f;
 
 	private Vector2 screenSize;
 	private Node2D cardBeingDragged = null;
 	private bool isHoveringOnCard = false;
+	private bool playedCardThisTurn = false;
 	
 	private PlayerHand player_hand_reference;
 
@@ -84,12 +87,12 @@ public partial class CardManager : Node2D
 	{
 		if (hovered)
 		{
-			card.Scale = new Vector2(1.05f, 1.05f);
+			card.Scale = new Vector2(BIGGER_CARD_SCALE, BIGGER_CARD_SCALE);
 			card.ZIndex = 2;
 		}
 		else
 		{
-			card.Scale = new Vector2(1f, 1f);
+			card.Scale = new Vector2(DEFAULT_CARD_SCALE, DEFAULT_CARD_SCALE);
 			card.ZIndex = 1;
 		}
 	}
@@ -98,7 +101,7 @@ public partial class CardManager : Node2D
 	public void StartDrag(Node2D card)
 	{
 		cardBeingDragged = card;
-		card.Scale = new Vector2(1.05f, 1.05f);
+		card.Scale = new Vector2(BIGGER_CARD_SCALE, BIGGER_CARD_SCALE);
 	}
 
 // Finaliza el arrastre y restaura la escala original
@@ -118,10 +121,10 @@ public partial class CardManager : Node2D
 				player_hand_reference.RemoveCardFromHand(cardBeingDragged);
 			}else{
 				//Si no se suelta en slot, la devolvemos a la mano
-				player_hand_reference.AddCardToHand(cardBeingDragged, DEFUALT_CARD_MOVE_SPEED);
+				player_hand_reference.AddCardToHand(cardBeingDragged, DEFAULT_CARD_MOVE_SPEED);
 			}
 			
-			cardBeingDragged.Scale = new Vector2(1f, 1f);
+			cardBeingDragged.Scale = new Vector2(DEFAULT_CARD_SCALE, DEFAULT_CARD_SCALE);
 			cardBeingDragged = null;
 		}
 	}
