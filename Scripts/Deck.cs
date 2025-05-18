@@ -60,6 +60,10 @@ public partial class Deck : Node2D
 		hand.AddCardToHand(new_card, CARD_DRAW_SPEED);
 	}
 	
+	public void ResetDraw(){
+		card_drawn_this_turn = false;
+	}
+	
 	public static void Shuffle<T>(List<T> list)
 	{
 		Random rng = new Random();

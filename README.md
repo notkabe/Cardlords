@@ -48,11 +48,17 @@
   - Las cartas se distribuyen centradas en la parte superior.
 - Creación del **mazo oponente (OpponentDeck)** basado en el mazo del jugador **(PlayerHand)**.
 - Implementación del **campo de batalla** con 5 CardSlot para cada jugador.
-- Implementación del **lógica de batalla (BattleManager)** (incompleto).
+- Implementación de **lógica de batalla (BattleManager)** (incompleto).
 - Identificación de bugs:
   - Interacción del jugador con cartas del enemigo.
   - Interacción del jugador con slots del enemigo.
 
+### ✅ Commit 6
+- Avance en la **lógica de batalla (BattleManager)**:
+	- Avance en la **IA**, robar y jugar cartas.
+- Solución de **bugs**:
+	- El jugador ya no puede interaccionar con las cartas eneminas.
+	- El jugador ya no puede interaccionar con los CardSlot enemigos.
 ---
 
 ## 🔧 Tecnologías utilizadas
