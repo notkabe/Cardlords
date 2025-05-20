@@ -34,7 +34,7 @@ public partial class InputManager : Node2D
 		}
 	}
 
-	private void RaycastAtCursor()
+	public void RaycastAtCursor()
 	{
 		var spaceState = GetWorld2D().DirectSpaceState;
 		var parameters = new PhysicsPointQueryParameters2D
@@ -53,9 +53,9 @@ public partial class InputManager : Node2D
 			if (result_collision_mask == COLLISION_MASK_CARD)
 			{
 				var card_found = collider.GetParent<Node2D>();
-				if (card_found != null)
+				if (card_found != null && card_found is Card caCard)
 				{
-					card_manager_reference.StartDrag(card_found);
+					card_manager_reference.CardClicked(caCard);
 				}
 			}
 			else if (result_collision_mask == COLLISION_MASK_DECK)

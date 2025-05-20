@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bxvvno10xunji"]
+[gd_scene load_steps=13 format=3 uid="uid://bxvvno10xunji"]
 
 [ext_resource type="Script" uid="uid://k67iqony5axy" path="res://Scripts/CardManager.cs" id="1_uu6xs"]
 [ext_resource type="Script" uid="uid://bxecoexq5r0f3" path="res://Scripts/OpponentHand.cs" id="3_a7xqc"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://bqsanbs5iwf0i" path="res://Scripts/InputManager.cs" id="6_nv0mc"]
 [ext_resource type="Texture2D" uid="uid://cxlr7b80bpvog" path="res://Assets/Card_Back_Opponent.png" id="7_5dj6k"]
 [ext_resource type="Script" uid="uid://btn82tdekisdx" path="res://Scripts/BattleManager.cs" id="7_k6q32"]
+[ext_resource type="Texture2D" uid="uid://dha6ncwlbovn0" path="res://Assets/Card_Slot.png" id="11_t0ywk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r0du0"]
 size = Vector2(246, 344)
@@ -128,5 +129,37 @@ offset_top = 512.5
 offset_right = 180.0
 offset_bottom = 543.5
 text = "END TURN"
+
+[node name="OpponentHealth" type="RichTextLabel" parent="."]
+offset_left = 130.0
+offset_top = 430.0
+offset_right = 170.0
+offset_bottom = 470.0
+scale = Vector2(2, 2)
+text = "0
+"
+
+[node name="PlayerHealth" type="RichTextLabel" parent="."]
+offset_left = 130.0
+offset_top = 590.0
+offset_right = 170.0
+offset_bottom = 630.0
+scale = Vector2(2, 2)
+text = "0
+"
+
+[node name="PlayerDiscard" type="Node2D" parent="."]
+position = Vector2(1530, 700)
+scale = Vector2(0.8, 0.8)
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayerDiscard"]
+texture = ExtResource("11_t0ywk")
+
+[node name="OpponentDiscard" type="Node2D" parent="."]
+position = Vector2(400, 350)
+scale = Vector2(0.8, 0.8)
+
+[node name="Sprite2D" type="Sprite2D" parent="OpponentDiscard"]
+texture = ExtResource("11_t0ywk")
 
 [connection signal="pressed" from="EndTurnButton" to="BattleManager" method="OnEndTurnButtonPressed"]

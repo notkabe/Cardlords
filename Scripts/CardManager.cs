@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class CardManager : Node2D
 {
@@ -13,6 +14,9 @@ public partial class CardManager : Node2D
 	private Node2D cardBeingDragged = null;
 	private bool isHoveringOnCard = false;
 	private bool playedCardThisTurn = false;
+	private List<CardSlot> invalidSlots;
+	private Card selectedCard;
+	 
 	
 	private PlayerHand player_hand_reference;
 
@@ -22,6 +26,8 @@ public partial class CardManager : Node2D
 		screenSize = GetViewportRect().Size;
 		player_hand_reference = GetNode<PlayerHand>("../PlayerHand");
 		GetNode<InputManager>("../InputManager").Connect("LeftMouseButtonReleased", new Callable(this, nameof(OnLeftClickReleased)));
+		
+		invalidSlots = GetNode<BattleManager>($"../BattleManager").emptyEnemyCardSlots;
 	}
 
  //Se llama cada frame
@@ -56,11 +62,16 @@ public partial class CardManager : Node2D
 	// Se llama cuando el cursor pasa por encima de una carta
 	private void OnHoveredOverCard(Node2D card)
 	{
+		if(card is Card cCard && cCard.CardSlotIsIn != null){
+			return;
+		}
+		
 		if (!isHoveringOnCard && cardBeingDragged == null)
 		{
 			isHoveringOnCard = true;
 			HighlightCard(card, true);
 		}
+		
 	}
 
 // Se llama cuando el cursor sale de una carta
@@ -96,6 +107,43 @@ public partial class CardManager : Node2D
 			card.ZIndex = 1;
 		}
 	}
+	
+	public void CardClicked(Card card){
+		if (card is Card playerCard){
+			if (playerCard.CardSlotIsIn != null){
+				var battleManager = GetNode<BattleManager>("../BattleManager");
+				
+				if (!battleManager.cardsAttackedThisTurn.Contains(playerCard)){
+					if (battleManager.opponentCardsOnBattlefield.Count == 0){
+						battleManager.DirectAttack(playerCard, "Player");
+						return;
+					}
+					else {
+						SelectCardForBattle(card);
+					}
+				}
+			} else {
+				StartDrag(card);
+			}
+		}
+	}
+
+	
+	private void SelectCardForBattle(Card card){
+		if(selectedCard != null){
+			if(selectedCard == card){
+				//card.Position = new Vector2(card.Position.X, card.Position.Y + 20);
+				selectedCard = null;
+			}else{
+				//selectedCard.Position = new Vector2(selectedCard.Position.X, selectedCard.Position.Y + 20);
+				selectedCard = card;
+				//card.Position  = new Vector2(card.Position.X, card.Position.Y - 20);
+			}
+		}else{
+			selectedCard = card;
+			//card.Position  = new Vector2(card.Position.X, card.Position.Y - 20);;
+		}
+	}
 
 // Inicia el arrastre de la carta indicada
 	public void StartDrag(Node2D card)
@@ -104,32 +152,43 @@ public partial class CardManager : Node2D
 		card.Scale = new Vector2(BIGGER_CARD_SCALE, BIGGER_CARD_SCALE);
 	}
 
-// Finaliza el arrastre y restaura la escala original
+	// Finaliza el arrastre y restaura la escala original
 	public void FinishDrag()
 	{
+		
 		if (cardBeingDragged != null)
 		{
 			var cardSlotFound = RaycastCheckForCardSlot();
-			
-			if(cardSlotFound != null && !cardSlotFound.cardInSlot){
-				//Colocamos la carta en el slot
+
+			if (cardSlotFound != null && !cardSlotFound.cardInSlot && !invalidSlots.Contains(cardSlotFound))
+			{
 				cardBeingDragged.Position = cardSlotFound.Position;
-				cardBeingDragged.GetNode<CollisionShape2D>("Area2D/CollisionShape2D").Disabled = true;
+
 				cardSlotFound.cardInSlot = true;
-				
-				//Quitamos la carta de la mano
+				cardSlotFound.GetNode<CollisionShape2D>("Area2D/CollisionShape2D").Disabled = true;
+
+				if(cardBeingDragged is Card card){
+					card.CardSlotIsIn = cardSlotFound;
+				}
+
 				player_hand_reference.RemoveCardFromHand(cardBeingDragged);
-			}else{
-				//Si no se suelta en slot, la devolvemos a la mano
+
+				if (cardBeingDragged is Card cbdCard)
+				{
+					GetNode<BattleManager>($"../BattleManager").playerCardsOnBattlefield.Add(cbdCard);
+				}
+			}
+			else
+			{
 				player_hand_reference.AddCardToHand(cardBeingDragged, DEFAULT_CARD_MOVE_SPEED);
 			}
-			
+
 			cardBeingDragged.Scale = new Vector2(DEFAULT_CARD_SCALE, DEFAULT_CARD_SCALE);
 			cardBeingDragged = null;
 		}
 	}
 
-// Devuelve la carta bajo el cursor usando un punto de colisión
+	// Devuelve la carta bajo el cursor usando un punto de colisión
 	 private Node2D RaycastCheckForCard()
 	{
 		var spaceState = GetWorld2D().DirectSpaceState;

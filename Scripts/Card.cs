@@ -11,6 +11,9 @@ public partial class Card : Node2D
 	public delegate void HoveredOffEventHandler(Card card);
 	
 	public string card_type;
+	public int Attack { get; set; }
+	public int Health { get; set; }
+	public CardSlot CardSlotIsIn { get; set; }
 
  // Se llama al cargar la escena por primera vez
 	public override void _Ready()
@@ -37,5 +40,14 @@ public partial class Card : Node2D
 	public void OnArea2DMouseExited()
 	{
 		EmitSignal(SignalName.HoveredOff, this);
+	}
+	
+	public void ClearSlot()
+	{
+		if (CardSlotIsIn != null)
+		{
+			CardSlotIsIn.cardInSlot = false;
+			CardSlotIsIn = null;
+		}
 	}
 }

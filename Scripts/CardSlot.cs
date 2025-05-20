@@ -3,5 +3,5 @@ using System;
 
 public partial class CardSlot : Node2D
 {
-	public bool cardInSlot = false;
+	public bool cardInSlot { get; set; } = false;
 }

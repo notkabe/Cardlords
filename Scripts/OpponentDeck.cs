@@ -46,10 +46,11 @@ public partial class OpponentDeck : Node2D
 		string cardImagePath = $"res://Assets/Card_Back_Opponent.png";
 		Texture2D cardTexture = GD.Load<Texture2D>(cardImagePath);
 		new_card.GetNode<Sprite2D>("CardImage").Texture = cardTexture;
-		new_card.Attack = CardDatabase.CARDS[card_drawn_name][0];
 		new_card.Name = card_drawn_name;
-		new_card.GetNode<RichTextLabel>("Attack").Text = CardDatabase.CARDS[card_drawn_name][0].ToString();
-		new_card.GetNode<RichTextLabel>("Health").Text = CardDatabase.CARDS[card_drawn_name][1].ToString();
+		new_card.Attack = CardDatabase.CARDS[card_drawn_name][0];
+		new_card.Health = CardDatabase.CARDS[card_drawn_name][1];
+		new_card.GetNode<RichTextLabel>("Attack").Text = new_card.Attack.ToString();
+		new_card.GetNode<RichTextLabel>("Health").Text = new_card.Health.ToString();
 		new_card.GetNode<RichTextLabel>("Attack").Visible = false;
 		new_card.GetNode<RichTextLabel>("Health").Visible = false;
 		GetNode("../CardManager").AddChild(new_card);

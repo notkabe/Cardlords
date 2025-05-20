@@ -47,14 +47,16 @@ public partial class Deck : Node2D
 		GetNode<RichTextLabel>("RichTextLabel").Text = player_deck.Count.ToString();
 
 		var card_scene = GD.Load<PackedScene>(CARD_SCENE_PATH);
-		var new_card = card_scene.Instantiate<Node2D>();
+		Card new_card = card_scene.Instantiate<Card>();
 		string cardImagePath = $"res://Assets/Card_{card_drawn_name}.png";
 		Texture2D cardTexture = GD.Load<Texture2D>(cardImagePath);
 		new_card.GetNode<Sprite2D>("CardImage").Texture = cardTexture;
-		new_card.GetNode<RichTextLabel>("Attack").Text = CardDatabase.CARDS[card_drawn_name][0].ToString();
-		new_card.GetNode<RichTextLabel>("Health").Text = CardDatabase.CARDS[card_drawn_name][1].ToString();
+		new_card.Name = "card_drawn_name";
+		new_card.Attack = CardDatabase.CARDS[card_drawn_name][0];
+		new_card.Health = CardDatabase.CARDS[card_drawn_name][1];
+		new_card.GetNode<RichTextLabel>("Attack").Text = new_card.Attack.ToString();
+		new_card.GetNode<RichTextLabel>("Health").Text = new_card.Health.ToString();
 		GetNode("../CardManager").AddChild(new_card);
-		new_card.Name = "Card";
 
 		var hand = GetNode("../PlayerHand") as PlayerHand;
 		hand.AddCardToHand(new_card, CARD_DRAW_SPEED);

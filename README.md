@@ -59,6 +59,19 @@
 - Solución de **bugs**:
 	- El jugador ya no puede interaccionar con las cartas eneminas.
 	- El jugador ya no puede interaccionar con los CardSlot enemigos.
+	
+### ✅ Commit 7
+- Avance en la **lógica de batalla (BattleManager)**:
+	- Avance en la **IA**, ataque a cartas del jugador o a la propia vida del jugador.
+- Avance en la **lógica de ataque** por parte del jugador:
+	- Funcionalidad de click sobre carta para atacar (incompleto, ataca a jugador pero no a cartas).
+- Interfaz:
+	- Añadido display de **vida del jugador**.
+	- Añadido **pila de descartes** tanto para jugador como IA.
+- Solución de bugs:
+	- Ya no se pueden poner cartas en los cardslots enemigos.
+	- Ya se puede poner una carta en un cardslot en el que ha muerto otra carta.
+	- La IA ya no puede atacar a las cartas de la pila de descartes.
 ---
 
 ## 🔧 Tecnologías utilizadas
