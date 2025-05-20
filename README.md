@@ -81,6 +81,8 @@
 - Interfaz:
 	- Añadido **mensaje de Victoria/Derrota**. Dicho mensaje permite **volver a jugar o salir del juego** y aparece
 	en el momento en el que la vida del jugador o oponente llega a 0.
+- Desarrollo:
+	- Código comentado al completo para mejoras en versiones futuras y mayor legibilidad para otros desarrolladores.
 - Solución de bugs:
 	- El jugador no podía añadir una carta en un CardSlot en el que había muerto una carta suya.
 	- Los botones de Reset y Salir no ejecutaban su funcionalidad al clickar en ellos.
