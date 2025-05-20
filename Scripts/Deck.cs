@@ -12,6 +12,7 @@ public partial class Deck : Node2D
 												"Knight", "Fenrir", "Demon", "Mage", "Hunter" };
 	private bool card_drawn_this_turn = false;
 
+	// Se ejecuta al iniciar la escena, baraja el mazo y rellena la mano
 	public override void _Ready()
 	{
 		Shuffle(player_deck);
@@ -23,6 +24,7 @@ public partial class Deck : Node2D
 		}
 	}
 
+	// Roba una carta del mazo
 	public void DrawCard()
 	{
 		if(card_drawn_this_turn){
@@ -62,10 +64,12 @@ public partial class Deck : Node2D
 		hand.AddCardToHand(new_card, CARD_DRAW_SPEED);
 	}
 	
+	// Restaura la posibilidad de robar una carta
 	public void ResetDraw(){
 		card_drawn_this_turn = false;
 	}
 	
+	// Baraja una lista de forma aleatoria
 	public static void Shuffle<T>(List<T> list)
 	{
 		Random rng = new Random();

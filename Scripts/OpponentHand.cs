@@ -11,11 +11,13 @@ public partial class OpponentHand : Node2D
 	public List<OpponentCard> opponent_hand = new();
 	private float center_screen_x;
 
+	// Se ejecuta al iniciar la escena, obtiene el centro de la pantalla horizontalmente
 	public override void _Ready()
 	{
 		center_screen_x = GetViewport().GetVisibleRect().Size.X / 2;
 	}
 
+	// Añade una carta a la mano del oponente
 	public void AddCardToHand(OpponentCard card, float speed)
 	{
 		if (!opponent_hand.Contains(card))
@@ -30,6 +32,7 @@ public partial class OpponentHand : Node2D
 		}
 	}
 
+	// Actualiza la posicion de las cartas en la mano para que se vean centradas
 	public void UpdateHandPositions(float speed)
 	{
 		for (int i = 0; i < opponent_hand.Count; i++)
@@ -41,6 +44,7 @@ public partial class OpponentHand : Node2D
 		}
 	}
 
+	// Calcula la posición de una carta para agregarla en la mano
 	public float CalculateCardPosition(int index)
 	{
 		float total_width = (opponent_hand.Count - 1) * CARD_WIDTH;
@@ -48,12 +52,14 @@ public partial class OpponentHand : Node2D
 		return x_offset;
 	}
 
+	// Anima ligeramente una carta hacia una posición en concreto 
 	public void AnimateCardToPosition(OpponentCard card, Vector2 new_position, float speed)
 	{
 		var tween = GetTree().CreateTween();
 		tween.TweenProperty(card, "position", new_position, speed);
 	}
 
+	// Elimina una carta de la mano del oponente (La ha jugado)
 	public void RemoveCardFromHand(OpponentCard card)
 	{
 		if (opponent_hand.Contains(card))

@@ -11,6 +11,7 @@ public partial class OpponentDeck : Node2D
 	public List<string> opponent_deck = new() { "Knight", "Fenrir", "Demon", "Mage", "Hunter", 
 												"Knight", "Fenrir", "Demon", "Mage", "Hunter" };
 
+	// Se ejecuta al iniciar la escena, baraja el mazo y rellena la mano
 	public override void _Ready()
 	{
 		Shuffle(opponent_deck);
@@ -21,6 +22,7 @@ public partial class OpponentDeck : Node2D
 		}
 	}
 
+	// Roba una carta del mazo
 	public void DrawCard()
 	{	
 		if (opponent_deck.Count == 0)
@@ -59,6 +61,7 @@ public partial class OpponentDeck : Node2D
 		hand.AddCardToHand(new_card, CARD_DRAW_SPEED);
 	}
 	
+	// Baraja una lista de forma aleatoria
 	public static void Shuffle<T>(List<T> list)
 	{
 		Random rng = new Random();

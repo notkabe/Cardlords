@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public partial class CardDatabase : Node
 {
+	// Base de datos de cartas conformada por Nombre - Ataque - Vida
 	public static readonly Dictionary<string, int[]> CARDS = new()
 	{
 		{ "Knight", new int[] { 2, 3 } },

@@ -8,6 +8,10 @@ public partial class BattleManager : Node
 	private Timer battleTimer;
 	private Button endTurnButton;
 	private RandomNumberGenerator rng;
+	private Control endGamePopup;
+	private Label resultLabel;
+	private Button restartButton;
+	private Button quitButton;
 	public List<CardSlot> emptyEnemyCardSlots = new();
 	public List<OpponentCard> opponentCardsOnBattlefield = new();
 	public List<Card> playerCardsOnBattlefield = new();
@@ -22,11 +26,9 @@ public partial class BattleManager : Node
 	private int opponent_health;
 	private bool cardWasDestroyed;
 	private int zindexValue;
-	
-	private void DebugMsg(string message){
-		GD.Print(message);
-	}
+	private bool gameEnded = false;
 
+	// Se ejecuta al principio de todo, asigna valores a variables
 	public override void _Ready()
 	{
 		endTurnButton = GetNode<Button>($"../EndTurnButton");
@@ -48,16 +50,79 @@ public partial class BattleManager : Node
 		opponent_health = STARTING_HEALTH;
 		GetNode<RichTextLabel>($"../OpponentHealth").Text = opponent_health.ToString();
 		
+		endGamePopup = GetNode<Control>($"../../EndGamePopup");
+		resultLabel = endGamePopup.GetNode<Label>($"Panel/VBoxContainer/ResultLabel");
+
+		// Conectar botones
+		restartButton = endGamePopup.GetNode<Button>($"Panel/VBoxContainer/RestartButton");
+		restartButton.Pressed += OnRestartPressed;
+
+		quitButton = endGamePopup.GetNode<Button>($"Panel/VBoxContainer/QuitButton");
+		quitButton.Pressed += OnQuitPressed;
+		
 		cardWasDestroyed = false;
 		zindexValue = 1;
 	}
+	
+	// Se ejecuta a cada frame del juego, comprueba si algun jugador está a 0 de vida para terminar el juego
+	public override void _Process(double delta)
+	{
+		 if (gameEnded){
+			return;
+		}
+		
+		if (player_health <= 0)
+		{
+			EndGame("Opponent");
+		}
+		else if (opponent_health <= 0)
+		{
+			EndGame("Player");
+		}
+	}
+	
+	// Finaliza el juego, hace visible un panel de resultado y da la opción de reiniciar o salir
+	private void EndGame(string winner)
+	{
+		if (gameEnded) return;
+		gameEnded = true;
+		GD.Print(resultLabel == null);
 
+		// 1) Actualiza texto y muestra el popup ANTES de pausar
+		if(resultLabel != null){
+			resultLabel.Text = winner == "Player" ? "¡Victoria!" : "Derrota...";
+			endGamePopup.Visible = true;
+		}
+
+		// 2) Ahora sí pones la escena en pausa
+		GetTree().Paused = true;
+		GD.Print("Game Paused");
+	}
+
+	// Reinicia el juego
+	private void OnRestartPressed()
+	{
+		GD.Print("Restart pressed");
+		GetTree().Paused = false;
+		GetTree().ReloadCurrentScene();
+	}
+
+	// Sale del juego
+	private void OnQuitPressed()
+	{
+		GD.Print("Quit pressed");
+		GetTree().Paused = false;
+		GetTree().Quit();
+	}
+
+	// Termina el turno y resetea la capacidad de ataque de las cartas del jugador
 	public void OnEndTurnButtonPressed()
 	{
 		cardsAttackedThisTurn = new ();
 		OpponentTurn();
 	}
 
+	// Método que gestiona el turno del oponente (acciones de la IA)
 	private async Task OpponentTurn()
 	{
 		endTurnButton.Visible = false;
@@ -106,9 +171,17 @@ public partial class BattleManager : Node
 		}
 		
 		await Wait(1f);
-		EndOpponentTurn();
+		if (deck.opponent_deck.Count == 0 && 
+		opponentCardsOnBattlefield.Count == 0 && 
+		GetNode<OpponentHand>($"../OpponentHand").opponent_hand.Count == 0){
+			EndGame("Player");
+		}else{
+			EndOpponentTurn();
+		}
+		
 	}
 
+	// Método para la IA, selecciona la carta con mayor ataque en la mano para jugarla en el campo
 	private void TryPlayCardWithHighestAttack()
 	{
 		List<OpponentCard> opponent_hand = GetNode<OpponentHand>("../OpponentHand").opponent_hand;
@@ -153,11 +226,13 @@ public partial class BattleManager : Node
 		
 		// Guarda el CardSlot
 		cardWithHighestAttack.CardSlotIsIn = randomEmptyCardSlot;
+		randomEmptyCardSlot.cardInSlot = true;
 		
 		// Añade a lista de cartas en juego (oponente)
 		opponentCardsOnBattlefield.Add(cardWithHighestAttack);
 	}
 
+	// Termina el turno del oponente
 	private void EndOpponentTurn()
 	{
 		GetNode<Deck>($"../Deck").ResetDraw();
@@ -165,6 +240,7 @@ public partial class BattleManager : Node
 		endTurnButton.Visible = true;
 	}
 	
+	// Ejecuta un ataque directo de attackingCard hacia jugador/oponente dependiendo de la variable attacker
 	public async Task DirectAttack(Node2D attackingCard, string attacker)
 	{
 		float newPosY;
@@ -208,7 +284,8 @@ public partial class BattleManager : Node
 		await Wait(1f);
 	}
 
-	private async Task PerformAttack(Node2D attackingCard, Node2D defendingCard, string attacker)
+	// Realiza un ataque hacia una carta defendingCard por attackingCard dependiendo de la variable attacker
+	public async Task PerformAttack(Node2D attackingCard, Node2D defendingCard, string attacker)
 	{
 		attackingCard.ZIndex = 5;
 		var new_pos = new Vector2(defendingCard.Position.X, defendingCard.Position.Y + BATTLE_POS_OFFSET);
@@ -224,8 +301,12 @@ public partial class BattleManager : Node
 		{
 			Card playerCard = (Card)attackingCard;
 			OpponentCard opponentCard = (OpponentCard)defendingCard;
-			cardsAttackedThisTurn.Add(playerCard);
+			
+			if(cardsAttackedThisTurn.Contains(playerCard)){
+				return;
+			}
 
+			cardsAttackedThisTurn.Add(playerCard);
 			opponentCard.Health = Math.Max(0, opponentCard.Health - playerCard.Attack);
 			opponentCard.GetNode<RichTextLabel>("Health").Text = opponentCard.Health.ToString();
 
@@ -269,6 +350,7 @@ public partial class BattleManager : Node
 			await Wait(1f);
 	}
 
+	// Devuelve el slot en el que una carta está alojada
 	private Vector2 GetCardSlotPosition(Node2D card)
 	{
 		if (card is Card playerCard && playerCard.CardSlotIsIn != null)
@@ -280,6 +362,7 @@ public partial class BattleManager : Node
 		return card.Position;
 	}
 	
+	// Destruye una carta muerta y la lleva a la pila de descartes dependiendo de la variable cardOwner
 	private async Task DestroyCard(Node2D card, string cardOwner)
 	{
 		var discardPos = cardOwner == "Player"
@@ -312,9 +395,11 @@ public partial class BattleManager : Node
 		{
 			oCard.ClearSlot();
 		}
-			await Wait(0.3f);
+		
+		await Wait(0.3f);
 	}
 
+	// Espera en base a un tiempo time (Lo hice por no repetir muchas lineas)
 	private async Task Wait(float time)
 	{
 		battleTimer.WaitTime = time;

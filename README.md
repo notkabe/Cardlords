@@ -72,6 +72,22 @@
 	- Ya no se pueden poner cartas en los cardslots enemigos.
 	- Ya se puede poner una carta en un cardslot en el que ha muerto otra carta.
 	- La IA ya no puede atacar a las cartas de la pila de descartes.
+	
+### ✅ Commit 8 - "Final de proyecto"
+- Completada **lógica de batalla (BattleManager)**:
+	- IA completa, ataca al jugador/cartas, roba carta al inicio de turno y juega las cartas en mano.
+	- El jugador ya puede atacar tanto al oponente (IA) como a las cartas que este tenga en juego con solo un click
+	encima de la carta que desee usar para atacar. Esta carta atacará de forma aleatoria a una de las cartas enemigas.
+- Interfaz:
+	- Añadido **mensaje de Victoria/Derrota**. Dicho mensaje permite **volver a jugar o salir del juego** y aparece
+	en el momento en el que la vida del jugador o oponente llega a 0.
+Solución de bugs:
+	- El jugador no podía añadir una carta en un CardSlot en el que había muerto una carta suya.
+	- Los botones de Reset y Salir no ejecutaban su funcionalidad al clickar en ellos.
+Identificación de bugs:
+	- El jugador puede poner una carta en un CardSlot enemigo si en este CardSlot ha muerto una carta enemiga.
+	- El mensaje de Victoria/Derrota se mantiene en la parte superior izquierda de la pantalla a pesar de tener valores de posicion
+	establecidos.
 ---
 
 ## 🔧 Tecnologías utilizadas

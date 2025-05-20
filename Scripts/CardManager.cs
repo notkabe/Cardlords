@@ -10,27 +10,30 @@ public partial class CardManager : Node2D
 	private const float DEFAULT_CARD_SCALE = 0.6f;
 	private const float BIGGER_CARD_SCALE = 0.65f;
 
-	private Vector2 screenSize;
+	public Vector2 screenSize;
 	private Node2D cardBeingDragged = null;
 	private bool isHoveringOnCard = false;
 	private bool playedCardThisTurn = false;
 	private List<CardSlot> invalidSlots;
-	private Card selectedCard;
+	private RandomNumberGenerator rng;
+	private Node2D selectedCard;
+	private Node2D selectedEnemy;
 	 
 	
 	private PlayerHand player_hand_reference;
 
- // Se ejecuta al entrar en la escena
+ 	// Se ejecuta al entrar en la escena, inicializa varios campos
 	public override void _Ready()
 	{
 		screenSize = GetViewportRect().Size;
 		player_hand_reference = GetNode<PlayerHand>("../PlayerHand");
 		GetNode<InputManager>("../InputManager").Connect("LeftMouseButtonReleased", new Callable(this, nameof(OnLeftClickReleased)));
 		
+		rng = new RandomNumberGenerator();
 		invalidSlots = GetNode<BattleManager>($"../BattleManager").emptyEnemyCardSlots;
 	}
 
- //Se llama cada frame
+ 	//Se llama cada frame
 	public override void _Process(double delta)
 	{
 		if (cardBeingDragged != null)
@@ -53,6 +56,7 @@ public partial class CardManager : Node2D
 		card.Connect("HoveredOff", new Callable(this, nameof(OnHoveredOffCard)));
 	}
 	
+	// Se ejecuta al soltar el Left Click al hacer Drag
 	public void OnLeftClickReleased(){
 		if(cardBeingDragged != null){
 			FinishDrag();
@@ -74,7 +78,7 @@ public partial class CardManager : Node2D
 		
 	}
 
-// Se llama cuando el cursor sale de una carta
+	// Se llama cuando el cursor sale de una carta
 	private void OnHoveredOffCard(Node2D card)
 	{
 		if (cardBeingDragged == null)
@@ -93,7 +97,7 @@ public partial class CardManager : Node2D
 		}
 	}
 
- // Cambia visualmente la carta para resaltar o quitar el resaltado
+	// Cambia visualmente la carta para resaltar o quitar el resaltado
 	private void HighlightCard(Node2D card, bool hovered)
 	{
 		if (hovered)
@@ -108,8 +112,10 @@ public partial class CardManager : Node2D
 		}
 	}
 	
-	public void CardClicked(Card card){
-		if (card is Card playerCard){
+	// Gestiona el clic sobre una carta: si está en el campo y viva, ataca o la selecciona;
+	// si aún no está colocada, comienza a arrastrarla.
+	public void CardClicked(Node2D card){
+		if (card is Card playerCard && playerCard.Health > 0){
 			if (playerCard.CardSlotIsIn != null){
 				var battleManager = GetNode<BattleManager>("../BattleManager");
 				
@@ -118,8 +124,16 @@ public partial class CardManager : Node2D
 						battleManager.DirectAttack(playerCard, "Player");
 						return;
 					}
-					else {
+					else
+					{
 						SelectCardForBattle(card);
+						
+						if(selectedCard != null){
+							selectedEnemy = (Node2D) battleManager.opponentCardsOnBattlefield[rng.RandiRange(0, battleManager.opponentCardsOnBattlefield.Count - 1)];
+							
+							battleManager.PerformAttack(selectedCard, selectedEnemy, "Player");
+							SelectCardForBattle(card);
+						}
 					}
 				}
 			} else {
@@ -128,31 +142,31 @@ public partial class CardManager : Node2D
 		}
 	}
 
-	
-	private void SelectCardForBattle(Card card){
+	// Resalta la carta que se quiere usar para atacar (Actualizaciones futuras)
+	private void SelectCardForBattle(Node2D card){
 		if(selectedCard != null){
 			if(selectedCard == card){
-				//card.Position = new Vector2(card.Position.X, card.Position.Y + 20);
+				card.Position = new Vector2(card.Position.X, card.Position.Y + 20);
 				selectedCard = null;
 			}else{
-				//selectedCard.Position = new Vector2(selectedCard.Position.X, selectedCard.Position.Y + 20);
+				selectedCard.Position = new Vector2(selectedCard.Position.X, selectedCard.Position.Y + 20);
 				selectedCard = card;
-				//card.Position  = new Vector2(card.Position.X, card.Position.Y - 20);
+				card.Position  = new Vector2(card.Position.X, card.Position.Y - 20);
 			}
 		}else{
 			selectedCard = card;
-			//card.Position  = new Vector2(card.Position.X, card.Position.Y - 20);;
+			card.Position  = new Vector2(card.Position.X, card.Position.Y - 20);;
 		}
 	}
 
-// Inicia el arrastre de la carta indicada
+	// Inicia el arrastre de la carta indicada
 	public void StartDrag(Node2D card)
 	{
 		cardBeingDragged = card;
 		card.Scale = new Vector2(BIGGER_CARD_SCALE, BIGGER_CARD_SCALE);
 	}
 
-	// Finaliza el arrastre y restaura la escala original
+	// Finaliza el arrastre y restaura la escala original, comprueba donde se deja la carta arrastrada
 	public void FinishDrag()
 	{
 		
@@ -189,7 +203,7 @@ public partial class CardManager : Node2D
 	}
 
 	// Devuelve la carta bajo el cursor usando un punto de colisión
-	 private Node2D RaycastCheckForCard()
+	private Node2D RaycastCheckForCard()
 	{
 		var spaceState = GetWorld2D().DirectSpaceState;
 		var parameters = new PhysicsPointQueryParameters2D
@@ -202,13 +216,13 @@ public partial class CardManager : Node2D
 		var result = spaceState.IntersectPoint(parameters);
 		if (result.Count > 0)
 		{
-			GD.Print(GetCardWithHighestZIndex(result));
 			return GetCardWithHighestZIndex(result);
 		}
 
 		return null;
 	}
 	
+	// Devuelve el cardslot bajo el cursor usando un punto de colisión
 	private CardSlot RaycastCheckForCardSlot()
 	{
 		var spaceState = GetWorld2D().DirectSpaceState;
@@ -228,24 +242,24 @@ public partial class CardManager : Node2D
 		return null;
 	}
 
-// Selecciona la carta con mayor ZIndex de entre las colisiones detectadas
+	// Selecciona la carta con mayor ZIndex de entre las colisiones detectadas
 	private Node2D GetCardWithHighestZIndex(Godot.Collections.Array<Godot.Collections.Dictionary> cards)
 	{
-	var highestZCard = cards[0]["collider"].As<Node2D>().GetParent<Node2D>();
-	int highestZIndex = highestZCard.ZIndex;
+		var highestZCard = cards[0]["collider"].As<Node2D>().GetParent<Node2D>();
+		int highestZIndex = highestZCard.ZIndex;
 
-	for (int i = 1; i < cards.Count; i++)
-	{
-		var currentCard = cards[i]["collider"].As<Node2D>().GetParent<Node2D>();
-		int currentZ = currentCard.ZIndex;
-
-		if (currentZ > highestZIndex)
+		for (int i = 1; i < cards.Count; i++)
 		{
-			highestZCard = currentCard;
-			highestZIndex = currentZ;
-		}
-	}
+			var currentCard = cards[i]["collider"].As<Node2D>().GetParent<Node2D>();
+			int currentZ = currentCard.ZIndex;
 
-	return highestZCard;
+			if (currentZ > highestZIndex)
+			{
+				highestZCard = currentCard;
+				highestZIndex = currentZ;
+			}
+		}
+
+		return highestZCard;
 	}
 }

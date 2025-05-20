@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bxvvno10xunji"]
+[gd_scene load_steps=14 format=3 uid="uid://bxvvno10xunji"]
 
 [ext_resource type="Script" uid="uid://k67iqony5axy" path="res://Scripts/CardManager.cs" id="1_uu6xs"]
 [ext_resource type="Script" uid="uid://bxecoexq5r0f3" path="res://Scripts/OpponentHand.cs" id="3_a7xqc"]
@@ -11,79 +11,82 @@
 [ext_resource type="Texture2D" uid="uid://cxlr7b80bpvog" path="res://Assets/Card_Back_Opponent.png" id="7_5dj6k"]
 [ext_resource type="Script" uid="uid://btn82tdekisdx" path="res://Scripts/BattleManager.cs" id="7_k6q32"]
 [ext_resource type="Texture2D" uid="uid://dha6ncwlbovn0" path="res://Assets/Card_Slot.png" id="11_t0ywk"]
+[ext_resource type="PackedScene" uid="uid://cpvfwcvfbsfl1" path="res://Scenes/EndGamePopup.tscn" id="12_i4n7x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r0du0"]
 size = Vector2(246, 344)
 
 [node name="Main" type="Node2D"]
 
-[node name="CardSlots" type="Node2D" parent="."]
+[node name="Game" type="Node2D" parent="."]
 
-[node name="CardSlot1" parent="CardSlots" instance=ExtResource("3_r0du0")]
+[node name="CardSlots" type="Node2D" parent="Game"]
+
+[node name="CardSlot1" parent="Game/CardSlots" instance=ExtResource("3_r0du0")]
 position = Vector2(640, 650)
 scale = Vector2(0.6, 0.6)
 
-[node name="CardSlot2" parent="CardSlots" instance=ExtResource("3_r0du0")]
+[node name="CardSlot2" parent="Game/CardSlots" instance=ExtResource("3_r0du0")]
 position = Vector2(800, 650)
 scale = Vector2(0.6, 0.6)
 
-[node name="CardSlot3" parent="CardSlots" instance=ExtResource("3_r0du0")]
+[node name="CardSlot3" parent="Game/CardSlots" instance=ExtResource("3_r0du0")]
 position = Vector2(960, 650)
 scale = Vector2(0.6, 0.6)
 
-[node name="CardSlot4" parent="CardSlots" instance=ExtResource("3_r0du0")]
+[node name="CardSlot4" parent="Game/CardSlots" instance=ExtResource("3_r0du0")]
 position = Vector2(1120, 650)
 scale = Vector2(0.6, 0.6)
 
-[node name="CardSlot5" parent="CardSlots" instance=ExtResource("3_r0du0")]
+[node name="CardSlot5" parent="Game/CardSlots" instance=ExtResource("3_r0du0")]
 position = Vector2(1280, 650)
 scale = Vector2(0.6, 0.6)
 
-[node name="CardSlot6" parent="CardSlots" instance=ExtResource("3_r0du0")]
+[node name="CardSlot6" parent="Game/CardSlots" instance=ExtResource("3_r0du0")]
 position = Vector2(640, 400)
 scale = Vector2(0.6, 0.6)
 
-[node name="CardSlot7" parent="CardSlots" instance=ExtResource("3_r0du0")]
+[node name="CardSlot7" parent="Game/CardSlots" instance=ExtResource("3_r0du0")]
 position = Vector2(800, 400)
 scale = Vector2(0.6, 0.6)
 
-[node name="CardSlot8" parent="CardSlots" instance=ExtResource("3_r0du0")]
+[node name="CardSlot8" parent="Game/CardSlots" instance=ExtResource("3_r0du0")]
 position = Vector2(960, 400)
 scale = Vector2(0.6, 0.6)
 
-[node name="CardSlot9" parent="CardSlots" instance=ExtResource("3_r0du0")]
+[node name="CardSlot9" parent="Game/CardSlots" instance=ExtResource("3_r0du0")]
 position = Vector2(1120, 400)
 scale = Vector2(0.6, 0.6)
 
-[node name="CardSlot10" parent="CardSlots" instance=ExtResource("3_r0du0")]
+[node name="CardSlot10" parent="Game/CardSlots" instance=ExtResource("3_r0du0")]
 position = Vector2(1280, 400)
 scale = Vector2(0.6, 0.6)
 
-[node name="PlayerHand" type="Node2D" parent="."]
+[node name="PlayerHand" type="Node2D" parent="Game"]
 script = ExtResource("4_cm0pq")
 
-[node name="OpponentHand" type="Node2D" parent="."]
+[node name="OpponentHand" type="Node2D" parent="Game"]
 script = ExtResource("3_a7xqc")
 
-[node name="Deck" type="Node2D" parent="."]
+[node name="Deck" type="Node2D" parent="Game"]
 position = Vector2(140, 955)
 scale = Vector2(0.6, 0.6)
 script = ExtResource("4_yg5tw")
 
-[node name="Sprite2D" type="Sprite2D" parent="Deck"]
+[node name="Sprite2D" type="Sprite2D" parent="Game/Deck"]
 z_index = -2
 position = Vector2(3.8147e-06, 0)
 scale = Vector2(1.23, 1.22857)
 texture = ExtResource("5_nv0mc")
 
-[node name="Area2D" type="Area2D" parent="Deck"]
+[node name="Area2D" type="Area2D" parent="Game/Deck"]
 collision_layer = 4
 collision_mask = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Deck/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Deck/Area2D"]
 shape = SubResource("RectangleShape2D_r0du0")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Deck"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Game/Deck"]
 modulate = Color(0, 0, 0, 1)
 offset_left = -109.0
 offset_top = 119.0
@@ -93,16 +96,16 @@ scale = Vector2(2, 2)
 text = "0
 "
 
-[node name="OpponentDeck" type="Node2D" parent="."]
+[node name="OpponentDeck" type="Node2D" parent="Game"]
 script = ExtResource("5_uvan1")
 
-[node name="Sprite2D" type="Sprite2D" parent="OpponentDeck"]
+[node name="Sprite2D" type="Sprite2D" parent="Game/OpponentDeck"]
 z_index = -2
 position = Vector2(1780, 125)
 scale = Vector2(0.738, 0.737143)
 texture = ExtResource("7_5dj6k")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="OpponentDeck"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Game/OpponentDeck"]
 modulate = Color(0, 0, 0, 1)
 offset_left = 1715.0
 offset_top = 191.0
@@ -112,25 +115,25 @@ scale = Vector2(1.5, 1.5)
 text = "0
 "
 
-[node name="CardManager" type="Node2D" parent="."]
+[node name="CardManager" type="Node2D" parent="Game"]
 script = ExtResource("1_uu6xs")
 
-[node name="InputManager" type="Node2D" parent="."]
+[node name="InputManager" type="Node2D" parent="Game"]
 script = ExtResource("6_nv0mc")
 
-[node name="BattleManager" type="Node" parent="."]
+[node name="BattleManager" type="Node" parent="Game"]
 script = ExtResource("7_k6q32")
 
-[node name="BattleTimer" type="Timer" parent="."]
+[node name="BattleTimer" type="Timer" parent="Game"]
 
-[node name="EndTurnButton" type="Button" parent="."]
+[node name="EndTurnButton" type="Button" parent="Game"]
 offset_left = 90.0
 offset_top = 512.5
 offset_right = 180.0
 offset_bottom = 543.5
 text = "END TURN"
 
-[node name="OpponentHealth" type="RichTextLabel" parent="."]
+[node name="OpponentHealth" type="RichTextLabel" parent="Game"]
 offset_left = 130.0
 offset_top = 430.0
 offset_right = 170.0
@@ -139,7 +142,7 @@ scale = Vector2(2, 2)
 text = "0
 "
 
-[node name="PlayerHealth" type="RichTextLabel" parent="."]
+[node name="PlayerHealth" type="RichTextLabel" parent="Game"]
 offset_left = 130.0
 offset_top = 590.0
 offset_right = 170.0
@@ -148,18 +151,20 @@ scale = Vector2(2, 2)
 text = "0
 "
 
-[node name="PlayerDiscard" type="Node2D" parent="."]
+[node name="PlayerDiscard" type="Node2D" parent="Game"]
 position = Vector2(1530, 700)
 scale = Vector2(0.8, 0.8)
 
-[node name="Sprite2D" type="Sprite2D" parent="PlayerDiscard"]
+[node name="Sprite2D" type="Sprite2D" parent="Game/PlayerDiscard"]
 texture = ExtResource("11_t0ywk")
 
-[node name="OpponentDiscard" type="Node2D" parent="."]
+[node name="OpponentDiscard" type="Node2D" parent="Game"]
 position = Vector2(400, 350)
 scale = Vector2(0.8, 0.8)
 
-[node name="Sprite2D" type="Sprite2D" parent="OpponentDiscard"]
+[node name="Sprite2D" type="Sprite2D" parent="Game/OpponentDiscard"]
 texture = ExtResource("11_t0ywk")
 
-[connection signal="pressed" from="EndTurnButton" to="BattleManager" method="OnEndTurnButtonPressed"]
+[node name="EndGamePopup" parent="." instance=ExtResource("12_i4n7x")]
+
+[connection signal="pressed" from="Game/EndTurnButton" to="Game/BattleManager" method="OnEndTurnButtonPressed"]

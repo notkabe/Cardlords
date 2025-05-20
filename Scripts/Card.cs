@@ -42,11 +42,13 @@ public partial class Card : Node2D
 		EmitSignal(SignalName.HoveredOff, this);
 	}
 	
+	// Limpia el slot en el que estaba para que pueda recibir otra carta
 	public void ClearSlot()
 	{
 		if (CardSlotIsIn != null)
 		{
 			CardSlotIsIn.cardInSlot = false;
+			CardSlotIsIn.GetNode<CollisionShape2D>("Area2D/CollisionShape2D").Disabled = false;
 			CardSlotIsIn = null;
 		}
 	}

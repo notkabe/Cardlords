@@ -12,12 +12,14 @@ public partial class InputManager : Node2D
 	private CardManager card_manager_reference;
 	private Deck deck_reference;
 
+	// Se ejecuta al iniciar la escena, inicializa las referencias
 	public override void _Ready()
 	{
 		card_manager_reference = GetNode<CardManager>("../CardManager");
 		deck_reference = GetNode<Deck>("../Deck");
 	}
 
+	// Gestiona el input de ratón mediante Signals
 	public override void _Input(InputEvent @event)
 	{
 		if (@event is InputEventMouseButton mouseEvent && mouseEvent.ButtonIndex == MouseButton.Left)
@@ -34,6 +36,8 @@ public partial class InputManager : Node2D
 		}
 	}
 
+	// Método general de detección de elementos bajo el cursor (No se ha llegado a implementar, se siguen
+	// usando RaycastCheckForCard y RaycastCheckForCardSlot)
 	public void RaycastAtCursor()
 	{
 		var spaceState = GetWorld2D().DirectSpaceState;
